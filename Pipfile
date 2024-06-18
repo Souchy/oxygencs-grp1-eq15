@@ -8,6 +8,8 @@ requests = "*"
 signalrcore = "*"
 
 [dev-packages]
+pylint = "*"
+black = "*"
 
 [requires]
 python_version = "3.8"
