@@ -3,8 +3,11 @@ import logging
 import requests
 import json
 import time
+from datetime import datetime
 from config import config
-
+from alchemy import alch, crud
+from models.Temperature import Temperature
+from models.HVACAction import HVACAction
 
 class App:
     def __init__(self):
@@ -26,6 +29,7 @@ class App:
         """Start Oxygen CS."""
         self.setup_sensor_hub()
         self._hub_connection.start()
+        self.db = alch.SessionLocal()
         print("Press CTRL+C to exit.")
         while True:
             time.sleep(2)
@@ -59,32 +63,41 @@ class App:
             print(data[0]["date"] + " --> " + data[0]["data"], flush=True)
             timestamp = data[0]["date"]
             temperature = float(data[0]["data"])
-            self.take_action(temperature)
-            self.save_event_to_database(timestamp, temperature)
+            action = self.take_action(temperature)
+            self.save_event_to_database(temperature, action, timestamp)
         except Exception as err:
             print(err)
 
     def take_action(self, temperature):
         """Take action to HVAC depending on current temperature."""
+        action = None
         if float(temperature) >= float(self.T_MAX):
-            self.send_action_to_hvac("TurnOnAc")
+            action = "TurnOnAc"
         elif float(temperature) <= float(self.T_MIN):
-            self.send_action_to_hvac("TurnOnHeater")
+            action = "TurnOnHeater"
+        
+        if action is not None:
+            self.send_action_to_hvac(action)
 
+        return action
+    
     def send_action_to_hvac(self, action):
         """Send action query to the HVAC service."""
         r = requests.get(f"{self.HOST}/api/hvac/{self.TOKEN}/{action}/{self.TICKS}")
         details = json.loads(r.text)
         print(details, flush=True)
 
-    def save_event_to_database(self, timestamp, temperature):
+    def save_event_to_database(self, temperature, action, timestamp):
         """Save sensor data into database."""
         try:
-            # To implement
-            pass
-        except requests.exceptions.RequestException as e:
-            # To implement
-            pass
+            temperature = Temperature(temperature, timestamp)
+            crud.create_temperature(self.db, temperature)
+            if action is not None:
+                hvac_action = HVACAction(action, timestamp)
+                crud.create_hvac_action(self.db, hvac_action)
+            
+        except Exception as e:
+            print(f"{type(e)} while saving temperature: {e}")
 
 
 if __name__ == "__main__":
