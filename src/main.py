@@ -20,6 +20,11 @@ class App:
         self.T_MAX = config["T_MAX"]
         self.T_MIN = config["T_MIN"]
         self.DATABASE_URL = config["DB_HOST"]
+        self.HOST = config["HOST_SENSORS"]
+        self.TOKEN = config["TOKEN_HVAC"]
+        self.T_MAX = config["T_MAX"]
+        self.T_MIN = config["T_MIN"]
+        self.DATABASE_URL = config["DB_HOST"]
 
     def __del__(self):
         if self._hub_connection != None:
