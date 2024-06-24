@@ -8,4 +8,3 @@ config = {
     **dotenv_values(path),
     **os.environ,  # override loaded values with environment variables
 }
-# print(config)
