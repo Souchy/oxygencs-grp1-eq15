@@ -3,16 +3,20 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
+[requires]
+python_version = "3.8"
+
 [packages]
 requests = "*"
 signalrcore = "*"
+psycopg2 = "*"
+SQLAlchemy = "*"
+python-dotenv = "*"
 
 [dev-packages]
 pylint = "*"
 black = "*"
-
-[requires]
-python_version = "3.8"
+pre-commit = "*"
 
 [scripts]
 start = "python src/main.py"
