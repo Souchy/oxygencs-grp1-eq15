@@ -1,8 +1,8 @@
-from signalrcore.hub_connection_builder import HubConnectionBuilder
-import logging
-import requests
 import json
 import time
+import logging
+import requests
+from signalrcore.hub_connection_builder import HubConnectionBuilder
 
 
 class App:
@@ -72,7 +72,9 @@ class App:
 
     def send_action_to_hvac(self, action):
         """Send action query to the HVAC service."""
-        r = requests.get(f"{self.HOST}/api/hvac/{self.TOKEN}/{action}/{self.TICKS}")
+        r = requests.get(
+            f"{self.HOST}/api/hvac/{self.TOKEN}/{action}/{self.TICKS}", timeout=10
+        )
         details = json.loads(r.text)
         print(details, flush=True)
 

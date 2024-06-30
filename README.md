@@ -17,6 +17,13 @@ Install the project's dependencies :
 
 ```bash
 pipenv install
+pip install --user pylint
+```
+
+Install pre-commit git hook :
+
+```bash
+pre-commit install
 ```
 
 ## Setup

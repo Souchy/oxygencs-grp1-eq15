@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [requires]
-python_version = "3.8"
+python_version = "3.11"
 
 [packages]
 requests = "*"
@@ -21,5 +21,6 @@ pre-commit = "*"
 
 [scripts]
 start = "python src/main.py"
-test = "# To implement"
-lint = "# To implement"
+test = "python -m unittest discover -s ./test -p \"*test*.py\""
+lint = "pylint -rn -sn --rcfile=.pylintrc ./src ./test"
+pre = "pre-commit run --all-files"
