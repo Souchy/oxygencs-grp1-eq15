@@ -4,6 +4,11 @@ import logging
 import requests
 from signalrcore.hub_connection_builder import HubConnectionBuilder
 
+from datetime import datetime
+from config import config
+from alchemy import alch, crud
+from models.Temperature import Temperature
+from models.HVACAction import HVACAction
 
 class App:
     def __init__(self):
@@ -11,11 +16,16 @@ class App:
         self.TICKS = 10
 
         # To be configured by your team
-        self.HOST = None  # Setup your host here
-        self.TOKEN = None  # Setup your token here
-        self.T_MAX = None  # Setup your max temperature here
-        self.T_MIN = None  # Setup your min temperature here
-        self.DATABASE_URL = None  # Setup your database here
+        self.HOST = config["HOST_SENSORS"]
+        self.TOKEN = config["TOKEN_HVAC"]
+        self.T_MAX = config["T_MAX"]
+        self.T_MIN = config["T_MIN"]
+        self.DATABASE_URL = config["DB_HOST"]
+        self.HOST = config["HOST_SENSORS"]
+        self.TOKEN = config["TOKEN_HVAC"]
+        self.T_MAX = config["T_MAX"]
+        self.T_MIN = config["T_MIN"]
+        self.DATABASE_URL = config["DB_HOST"]
 
     def __del__(self):
         if self._hub_connection != None:
@@ -25,6 +35,7 @@ class App:
         """Start Oxygen CS."""
         self.setup_sensor_hub()
         self._hub_connection.start()
+        self.db = alch.SessionLocal()
         print("Press CTRL+C to exit.")
         while True:
             time.sleep(2)
@@ -58,18 +69,24 @@ class App:
             print(data[0]["date"] + " --> " + data[0]["data"], flush=True)
             timestamp = data[0]["date"]
             temperature = float(data[0]["data"])
-            self.take_action(temperature)
-            self.save_event_to_database(timestamp, temperature)
+            action = self.take_action(temperature)
+            self.save_event_to_database(temperature, action, timestamp)
         except Exception as err:
             print(err)
 
     def take_action(self, temperature):
         """Take action to HVAC depending on current temperature."""
+        action = None
         if float(temperature) >= float(self.T_MAX):
-            self.send_action_to_hvac("TurnOnAc")
+            action = "TurnOnAc"
         elif float(temperature) <= float(self.T_MIN):
-            self.send_action_to_hvac("TurnOnHeater")
+            action = "TurnOnHeater"
+        
+        if action is not None:
+            self.send_action_to_hvac(action)
 
+        return action
+    
     def send_action_to_hvac(self, action):
         """Send action query to the HVAC service."""
         r = requests.get(
@@ -78,15 +95,17 @@ class App:
         details = json.loads(r.text)
         print(details, flush=True)
 
-    ## TODO
-    # def save_event_to_database(self, timestamp, temperature):
-    #     """Save sensor data into database."""
-    #     try:
-    #         # To implement
-    #         pass
-    #     except requests.exceptions.RequestException as e:
-    #         # To implement
-    #         pass
+    def save_event_to_database(self, temperature, action, timestamp):
+        """Save sensor data into database."""
+        try:
+            temperature = Temperature(temperature, timestamp)
+            crud.create_temperature(self.db, temperature)
+            if action is not None:
+                hvac_action = HVACAction(action, timestamp)
+                crud.create_hvac_action(self.db, hvac_action)
+            
+        except Exception as e:
+            print(f"{type(e)} while saving temperature: {e}")
 
 
 if __name__ == "__main__":
