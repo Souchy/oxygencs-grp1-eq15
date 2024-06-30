@@ -12,6 +12,7 @@ signalrcore = "*"
 psycopg2 = "*"
 SQLAlchemy = "*"
 python-dotenv = "*"
+pylint = "*"
 
 [dev-packages]
 pylint = "*"
