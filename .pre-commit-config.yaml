@@ -31,6 +31,20 @@ repos:
             "-rn", # Only display messages
             "-sn", # Don't display the score
             "--rcfile=.pylintrc", # Link to your config file
-            "./src",
-            "./test",
           ]
+
+  - repo: local
+    hooks:
+      - id: unittest
+        name: unittest
+        language: python
+        types: [python]
+        entry: python -m unittest discover
+        args: [
+            "-s",
+            "test", # folder
+            "-p",
+            "*test*.py", # match
+          ]
+        pass_filenames: false
+        stages: [commit]
