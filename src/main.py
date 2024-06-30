@@ -78,14 +78,15 @@ class App:
         details = json.loads(r.text)
         print(details, flush=True)
 
-    def save_event_to_database(self, timestamp, temperature):
-        """Save sensor data into database."""
-        try:
-            # To implement
-            pass
-        except requests.exceptions.RequestException as e:
-            # To implement
-            pass
+    ## TODO
+    # def save_event_to_database(self, timestamp, temperature):
+    #     """Save sensor data into database."""
+    #     try:
+    #         # To implement
+    #         pass
+    #     except requests.exceptions.RequestException as e:
+    #         # To implement
+    #         pass
 
 
 if __name__ == "__main__":

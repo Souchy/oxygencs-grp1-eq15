@@ -28,6 +28,5 @@ disable=
     missing-docstring,
     invalid-name,
     consider-using-enumerate,
-    unused-argument,
     redundant-unittest-assert,
-    unused-variable
+    fixme
