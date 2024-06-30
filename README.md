@@ -17,6 +17,7 @@ Install the project's dependencies :
 
 ```bash
 pipenv install
+pip install --user pre-commit
 pip install --user pylint
 ```
 

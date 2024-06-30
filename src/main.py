@@ -1,16 +1,21 @@
 import json
 import time
 import logging
+
 import requests
 from signalrcore.hub_connection_builder import HubConnectionBuilder
+from sqlalchemy.orm import Session
 
-from datetime import datetime
 from config import config
 from alchemy import alch, crud
 from models.Temperature import Temperature
 from models.HVACAction import HVACAction
 
+
 class App:
+
+    db: Session
+
     def __init__(self):
         self._hub_connection = None
         self.TICKS = 10
@@ -81,12 +86,12 @@ class App:
             action = "TurnOnAc"
         elif float(temperature) <= float(self.T_MIN):
             action = "TurnOnHeater"
-        
+
         if action is not None:
             self.send_action_to_hvac(action)
 
         return action
-    
+
     def send_action_to_hvac(self, action):
         """Send action query to the HVAC service."""
         r = requests.get(
@@ -103,7 +108,7 @@ class App:
             if action is not None:
                 hvac_action = HVACAction(action, timestamp)
                 crud.create_hvac_action(self.db, hvac_action)
-            
+
         except Exception as e:
             print(f"{type(e)} while saving temperature: {e}")
 

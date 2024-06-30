@@ -1,6 +1,5 @@
-import json
 import os
-from dotenv import dotenv_values, find_dotenv, load_dotenv
+from dotenv import dotenv_values, find_dotenv
 
 path = find_dotenv(".env")
 
