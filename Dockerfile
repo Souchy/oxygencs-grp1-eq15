@@ -8,7 +8,7 @@ RUN pip install pipenv
 COPY Pipfile .
 RUN pipenv install
 
-COPY .env .
+# COPY .env .
 COPY src src
 
 ENTRYPOINT pipenv run start
