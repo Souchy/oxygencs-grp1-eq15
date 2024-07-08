@@ -13,6 +13,7 @@ psycopg2 = "*"
 SQLAlchemy = "*"
 python-dotenv = "*"
 pylint = "*"
+pydantic = "*"
 
 [dev-packages]
 pylint = "*"
