@@ -1,7 +1,7 @@
 import unittest
-from src.alchemy import crud, alch
-from src.models.Temperature import Temperature
-from src.models.HVACAction import HVACAction
+from alchemy import crud, alch
+from models.Temperature import Temperature
+from models.HVACAction import HVACAction
 
 class DatabaseTest(unittest.TestCase):
 

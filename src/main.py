@@ -6,10 +6,10 @@ import requests
 from signalrcore.hub_connection_builder import HubConnectionBuilder
 from sqlalchemy.orm import Session
 
-from src.config import config
-from src.alchemy import alch, crud
-from src.models.Temperature import Temperature
-from src.models.HVACAction import HVACAction
+from config import config
+from alchemy import alch, crud
+from models.Temperature import Temperature
+from models.HVACAction import HVACAction
 
 
 class App:

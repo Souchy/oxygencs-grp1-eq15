@@ -1,7 +1,7 @@
 import unittest
-from src.main import App
-from src.alchemy import alch
-from src.config import config
+from main import App
+from alchemy import alch
+from config import config
 
 
 class HVACTest(unittest.TestCase):
