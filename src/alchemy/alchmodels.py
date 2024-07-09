@@ -1,7 +1,7 @@
 from datetime import datetime
 from sqlalchemy.orm import Mapped
 from sqlalchemy import Column, Integer, Float, DateTime, String
-from alchemy.alch import Base, engine
+from src.alchemy.alch import Base, engine
 
 
 class Temperature(Base):

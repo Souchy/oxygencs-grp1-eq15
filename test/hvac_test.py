@@ -1,6 +1,7 @@
 import unittest
 from src.main import App
 from src.alchemy import alch
+from src.config import config
 
 
 class HVACTest(unittest.TestCase):
@@ -12,12 +13,14 @@ class HVACTest(unittest.TestCase):
     self.app.db = alch.SessionLocal()    
 
   def test_take_action_heater(self):
-    action = self.app.take_action(0)
-    self.assertAlmostEquals(action, "TurnOnHeater")
+    temp = int(config["T_MIN"]) - 1
+    action = self.app.take_action(temp)
+    self.assertEqual(action, "TurnOnHeater")
 
   def test_take_action_ac(self):
-    action = self.app.take_action(50)
-    self.assertAlmostEquals(action, "TurnOnAc")
+    temp = int(config["T_MAX"]) + 1
+    action = self.app.take_action(temp)
+    self.assertEqual(action, "TurnOnAc")
 
   def tearDown(self):
     pass

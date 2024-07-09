@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from alchemy import alchmodels
-from models import Temperature, HVACAction
+from src.alchemy import alchmodels
+from src.models import Temperature, HVACAction
 
 
 def create_temperature(db: Session, temperature: Temperature, commit=True):
