@@ -49,8 +49,9 @@ jobs:
           org.opencontainers.image.description=Oxygen control app
           org.opencontainers.image.vendor=Eq15
         flavor: |
+          latest=true
           prefix=oxygencs-
-          latest=auto
+          suffix=
         #${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
     - name: Build and push Docker image
       id: push
