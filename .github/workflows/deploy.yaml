@@ -52,7 +52,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: ${{ steps.meta.outputs.tags }},oxygencs:latest
+        tags: ${{ steps.meta.outputs.tags }}:oxygencs:latest
         labels: oxygencs:latest ${{ steps.meta.outputs.labels }}
     #- name: Push image to dockerhub
     #  run: |
