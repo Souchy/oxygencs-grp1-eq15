@@ -43,7 +43,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
       with:
-        images: souchy/log680-grp1-eq15
+        images: ${{ secrets.DOCKER_IMAGE }}
         labels: |
           org.opencontainers.image.title=OxygenCS
           org.opencontainers.image.description=Oxygen control app
@@ -55,5 +55,5 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: ${{ steps.meta.outputs.tags }}-oxygencs, souchy/log680-grp1-eq15:latest-oxygencs
+        tags: ${{ steps.meta.outputs.tags }}-oxygencs, ${{ secrets.DOCKER_IMAGE }}:latest-oxygencs
         labels: ${{ steps.meta.outputs.labels }}
