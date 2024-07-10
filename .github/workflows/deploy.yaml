@@ -48,13 +48,6 @@ jobs:
           org.opencontainers.image.title=OxygenCS
           org.opencontainers.image.description=Oxygen control app
           org.opencontainers.image.vendor=Eq15
-        # flavor: |
-        #   latest=true
-        #   prefix=oxygencs-
-        #   suffix=
-        tags: |
-          type=ref,event=branch,prefix=oxygencs-
-        #${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
     - name: Build and push Docker image
       id: push
       uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
@@ -62,10 +55,5 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: ${{ steps.meta.outputs.tags }}, souchy/log680-grp1-eq15:oxygencs-latest, souchy/log680-grp1-eq15:version-${{ steps.meta.outputs.version }}
+        tags: ${{ steps.meta.outputs.tags }}-oxygencs, souchy/log680-grp1-eq15:latest-oxygencs
         labels: ${{ steps.meta.outputs.labels }}
-    #- name: Push image to dockerhub
-    #  run: |
-    #    docker login -u souchy
-    #    docker tag oxygencs:latest souchy/log680-grp1-eq15:latest
-    #    docker push souchy/log680-grp1-eq15:latest
