@@ -53,7 +53,7 @@ jobs:
         #   prefix=oxygencs-
         #   suffix=
         tags: |
-          prefix=oxygencs-
+          type=ref,prefix=oxygencs-
         #${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
     - name: Build and push Docker image
       id: push
@@ -62,7 +62,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: ${{ steps.meta.outputs.tags }}, souchy/log680-grp1-eq15:oxygencs-latest
+        tags: ${{ steps.meta.outputs.tags }}, souchy/log680-grp1-eq15:oxygencs-latest, souchy/log680-grp1-eq15:version-${{ steps.meta.outputs.veersion }}
         labels: ${{ steps.meta.outputs.labels }}
     #- name: Push image to dockerhub
     #  run: |
