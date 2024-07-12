@@ -1,4 +1,4 @@
-# LOG-680 : Template for Oxygen-CS
+# LOG-680 : Oxygen-CS
 
 This Python application continuously monitors a sensor hub and manages HVAC (Heating, Ventilation, and Air Conditioning) system actions based on received sensor data.
 
@@ -29,13 +29,16 @@ pre-commit install
 
 ## Setup
 
-You need to setup the following variables inside the App class:
+You need to setup the following variables in your .env file:
 
-- HOST: The host of the sensor hub and HVAC system.
-- TOKEN: The token for authenticating requests.
+- HOST_SENSORS: The host of the sensor hub and HVAC system.
+- TOKEN_HVAC: The token for authenticating requests.
 - T_MAX: The maximum allowed temperature.
 - T_MIN: The minimum allowed temperature.
-- DATABASE_URL: The database connection URL.
+- DB_HOST
+- DB_NAME
+- DB_USER
+- DB_PASSWORD
 
 ## Running the Program
 

@@ -4,34 +4,51 @@
 ## Doc
 
 Le rapport de ce laboratoire se trouve à doc/rapport.md
+Le README.md du root contient plus d'informations.
 
-## Installation
+## Requis
 
-1. Créer un environement python en utilisant les dépendances ci-dessous. VSCode vous demande d'en créer un la première fois que vous roulez `python main.py`.
+- Python 3.8+
+- pipenv
 
-   Packages utilisés:  
-   > pip install python-dotenv  
-   > pip install SQLAlchemy  
-   > pip install pydantic
-   > pip install pydantic_core
-   > pip install psychopg2
-   > pip install requests
-   > pip install signalrcore
+## Commencer
 
-2. Créer un fichier .env avec toutes les variables d'environnement nécessaires:
-   - REPOSITORY_ACCESS_TOKEN
-   - PROJECT_ACCESS_TOKEN
-   - METRICS_REPOSITORY
-   - OXYGENCS_REPOSITORY
-   - DB_HOST
-   - DB_NAME
-   - DB_USER
-   - DB_PASSWORD
-   - HOST_SENSORS
-   - TOKEN_HVAC
-   - T_MAX
-   - T_MIN
+Installer les dépendances du projet :
 
-## Run
+```bash
+pipenv install
+pip install --user pre-commit
+pip install --user pylint
+```
 
-> python main.py
+Installer pre-commit git hook :
+
+```bash
+pre-commit install
+```
+
+Créer un fichier .env avec toutes les variables d'environnement nécessaires:
+
+- HOST_SENSORS
+- TOKEN_HVAC
+- T_MAX
+- T_MIN
+- DB_HOST
+- DB_NAME
+- DB_USER
+- DB_PASSWORD
+
+## Rouler le programme
+
+```bash
+pipenv run start
+```
+
+## Image docker
+
+Dépot d'images: <https://hub.docker.com/repository/docker/souchy/log680-grp1-eq15/general>
+
+```bash
+docker build -t oxygencs .
+docker run --env-file .env oxygencs
+```

@@ -12,17 +12,19 @@ Ce deuxième laboratoire constiste en plusieurs parties:
 
 1. Planification du travail
 
-  - Ajouter les tâches aux Kanban
-  - Attribuer/Assigner les tâches à Nicolas et Robyn
+- Ajouter les tâches aux Kanban
+- Attribuer/Assigner les tâches à Nicolas et Robyn
 
 2. Fork de OxygenCS
-  - Faire une fork de OxygenCS, créer les variables d'environnement nécessaires
-  - 
+
+- Faire une fork de OxygenCS, créer les variables d'environnement nécessaires
+-
 
 ## Répartition des tâches
 
 La répartition des tâche s'est beaucoup mieux déroulée que lors du premier laboratoire, malgré les plusieurs contretemps que nous avons rencontrés. En effet, un des membres de notre équipe, Hugo, nous à quitté. Nous avons donc du se répartir sa charge de travail entre les deux membres restants: Robyn et Nicolas.
 Nous avons eu plus de facilité à accomplir les objectifs mentionnés plus tôt car une part de la logique à déjà été mise en place lors du premier laboratoire :
+
 - La structure du API
 - La base de données
 - Le ORM (Object relationnal mapping)
@@ -36,72 +38,49 @@ Nous nous sommes réparties les tâches beaucoup plus équitablement pour ce lab
 
 ## Arboresence du projet
 
-│   .dockerignore
-│   .env
-│   .gitignore
-│   .pre-commit-config.yaml
-│   .pylintrc
-│   compose.yaml
-│   Dockerfile
-│   LICENSE
-│   Pipfile
-│   Pipfile.lock
-│   README.Docker.md
-│   README.md
-│
-├───.github
-│   └───workflows
-│           deploy.yaml
-│           pr.yaml
-│
-├───.venv
-│   │   .gitignore
-│   │   pyvenv.cfg
-│   │
-│   ├───Include
-│   │   └───site
-│   │       └───python3.10
-│   │           └───greenlet
-│   │                   greenlet.h
-│   │
-│   ├───Lib
-│   │   └───site-packages
-│   │
-│   │
-│   └───src
-├───.vscode
-│       launch.json
-│
-├───doc
-│       rapport.md
-|       README.md
-│
-├───src
-│   │   config.py
-│   │   main.py
-│   │   __init__.py
-│   │
-│   ├───alchemy
-│   │   │   alch.py
-│   │   │   alchmodels.py
-│   │   │   crud.py
-│   │
-│   └───models
-│       │   HVACAction.py
-│       │   Temperature.py
-│
-└───test
-    │   db_test.py
-    │   hvac_test.py
-    │   test.py
-    │   __init__.py
+├── .github/
+│   ├───workflows
+│   │   ├── deploy.yaml
+│   │   ├── pr.yaml
+├── .vscode/
+│   ├─── launch.json
+├── doc/
+│   ├── README.md
+│   ├── rapport.md
+├── src/
+│   ├── main.py
+│   ├── config.py
+│   ├── __init__.py
+│   ├───alchemy/
+│   │   ├── alch.py
+│   │   ├── alchmodels.py
+│   │   ├── crud.py
+│   ├───models/
+│   │   ├── HVACAction.py
+│   │   ├── Temperature.py
+├── test/
+│   ├── db_test.py
+│   ├── hvac_test.py
+│   ├── test.py
+│   ├── __init__.py
+├── .dockerignore
+├── .env
+├── .gitignore
+├── .pre-commit-config.yaml
+├── .pylintrc
+├── compose.yaml
+├── Dockerfile
+├── LICENSE
+├── Pipfile
+├── README.Docker.md
+└── README.md
 
-Tout d'abord, le fichier `doc\README.md` dans le dossier doc est important à lire pour l'installation et l'exécution du projet. 
-Le fichier `.env` est à créer soit-même, il configure toutes les variables d'environnement et les secrets. Celui-ci doit rester en local uniquement, il est noté dans le `.gitignore`. Il contient notamment le dépot et le projet à examiner. Plus de détails sur les variables à inclure dans le fichier `.env` se trouvent dans `doc\README.md` 
+Tout d'abord, le fichier `doc\README.md` dans le dossier doc est important à lire pour l'installation et l'exécution du projet.
+Le fichier `.env` est à créer soit-même, il configure toutes les variables d'environnement et les secrets. Celui-ci doit rester en local uniquement, il est noté dans le `.gitignore`. Il contient notamment le dépot et le projet à examiner. Plus de détails sur les variables à inclure dans le fichier `.env` se trouvent dans `doc\README.md`
 Le dossier `tests/` est explicite, contenant des tests unitaires et d'intégration.
 Le dossier `src/` contient quelques fichiers communs:
 
-- `main.py` se trouve dans le dossier src, il démarre l'utilitaire OxygenCS.  
+- `main.py` se trouve dans le dossier src, il démarre l'utilitaire OxygenCS.
 - `config.py` est responsable de charger les secrets, soit à partir du .env (local), soit à partir des variables d'environnement (Github Actions)
 
 Le dossier `src/alchemy/` contient la gestion de la base de données:
@@ -111,17 +90,32 @@ Le dossier `src/alchemy/` contient la gestion de la base de données:
 - `crud.py` est responsable d'exécuter des requêtes sur la base de données
 
 Le dossier `src/models/` contient les modèles dits Pydantic. Les modèles Pydantic permettent d'être (dé)sérialisés et validés en json au contraire des modèles de base de données. Les modèles de base de données sont automatiquement convertis en modèles Pydantic lors de leur sérialisation à la réponse de requêtes API. Ce projet contient deux modèles:
+
 - HVACAction: Enregistre les actions de l'unité HVAC en fonction de la température et de la configuration de T_MIN et T_MAX.
 - Temperature: Enregistre la température de la pièce en degrés Celcius à un interval prédéfini.
 
-## Description et les justifications des étapes d’implémentation de votre CI
+## Description et les justifications des étapes d’implémentation de votre CI/CD
+
+Le pipeline CI sur pull request applique le linting, le formattage et les tests d'intégration.
+Le pipeline CD sur push sur la branche main construit et déploie une image docker du logiciel sur dockerhub.
+Nous utilisons le Dockerfile pour construire cette image.
+Par exemple si on veut le construire et rouler manuellement:
+
+```bash
+docker build -t oxygencs .
+docker run --env-file .env oxygencs
+```
+
+L'image a tout de même besoin de rouler avec le fichier de variables d'environnement .env puisqu'il ne peut pas être encapsulé sur github et dockerhub.
 
 ## Choix de métriques CI
 
-Les métriques CI concernent 3 facettes de notre intégration continues: 
+Les métriques CI concernent 3 facettes de notre intégration continues:
 
 #### Les tags DockerHub
+
 Une image contient un nom et un tag facultatif. Ce tag est un identifiant de manifeste personnalisé et lisible qui correspond généralement à la version spécifique de nos images. Nous allons chercher les informations suivantes sur les tags:
+
 - tag_id : identifiant du tag
 - name: le nom du tag
 - last_updater_username: le nom d'utilisateur de la personne qui à créé le tag
@@ -131,6 +125,7 @@ Une image contient un nom et un tag facultatif. Ce tag est un identifiant de man
 #### Les conteneurs Dockers
 
 Les informations suivantes sur les conteneurs dockers:
+
 - container_id: L'identifiant du conteneur
 - name: Le nom du conteneur
 - status: L'état du conteneur
@@ -141,6 +136,7 @@ Les informations suivantes sur les conteneurs dockers:
 #### Les images Docker
 
 Les informations suivantes sur les images dockers:
+
 - image_id: identifiant de l'image
 - tag: Le tag associé à l'image (La version de l'image)
 - os: Le système d'exploitation qui exécute l'image
