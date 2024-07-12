@@ -129,7 +129,7 @@ dmypy.json
 .pyre/
 
 # vsCode
-.vscode/*
+.vscode
 
 # SSH Key
 deploy_rsa
