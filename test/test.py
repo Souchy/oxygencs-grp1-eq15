@@ -1,6 +1,4 @@
 import unittest
-from hvac_test import HVACTest
-from db_test import DatabaseTest
 
 
 class TestPlaceholder(unittest.TestCase):
@@ -10,4 +8,3 @@ class TestPlaceholder(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

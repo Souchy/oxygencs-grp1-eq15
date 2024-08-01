@@ -8,14 +8,12 @@ from sqlalchemy.orm import Session
 
 from config import config
 from alchemy import alch, crud
+from alchemy.alch import SessionLocal
 from models.Temperature import Temperature
 from models.HVACAction import HVACAction
 
 
 class App:
-
-    db: Session
-
     def __init__(self):
         self._hub_connection = None
         self.TICKS = 10
@@ -35,7 +33,6 @@ class App:
         """Start Oxygen CS."""
         self.setup_sensor_hub()
         self._hub_connection.start()
-        self.db = alch.SessionLocal()
         print("Press CTRL+C to exit.")
         while True:
             time.sleep(2)
@@ -98,14 +95,16 @@ class App:
     def save_event_to_database(self, temperature, action, timestamp):
         """Save sensor data into database."""
         try:
+            db = SessionLocal()
             temperature = Temperature(temperature, timestamp)
-            crud.create_temperature(self.db, temperature)
+            crud.create_temperature(db, temperature)
             if action is not None:
                 hvac_action = HVACAction(action, timestamp)
-                crud.create_hvac_action(self.db, hvac_action)
-
+                crud.create_hvac_action(db, hvac_action)
         except Exception as e:
             print(f"{type(e)} while saving temperature: {e}")
+        finally:
+            db.close()
 
 
 if __name__ == "__main__":
